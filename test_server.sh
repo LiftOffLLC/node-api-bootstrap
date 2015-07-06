@@ -1,0 +1,1 @@
+PORT=4000 MONGOLAB_URI=mongodb://localhost:27017/flashstorm_test node server.js

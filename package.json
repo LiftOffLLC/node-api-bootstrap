@@ -1,0 +1,38 @@
+{
+  "name": "flashstorm-api",
+  "main": "server.js",
+  "description": "Flashstorm Node.js API server using Express 4",
+  "scripts": {
+    "start": "node server.js",
+    "pretest": "node lib/drop_test_db.js",
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "latest",
+    "body-parser": "~1.0.0",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.0.0",
+    "dotenv": "^1.2.0",
+    "ejs": "~0.8.5",
+    "express": "~4.0.0",
+    "express-session": "~1.0.0",
+    "jwt-simple": "^0.3.0",
+    "mandrill-api": "^1.0.45",
+    "method-override": "~1.0.0",
+    "mongoose": "^4.0.6",
+    "morgan": "~1.0.0",
+    "passport": "~0.1.17",
+    "passport-facebook": "~1.0.2",
+    "passport-facebook-token": "^2.1.0",
+    "passport-google-oauth": "~0.1.5",
+    "passport-local": "~0.1.6",
+    "passport-twitter": "~1.0.2",
+    "underscore": "^1.8.3"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
+  "devDependencies": {
+    "supertest": "^1.0.1"
+  }
+}

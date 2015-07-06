@@ -1,0 +1,288 @@
+swagger: "2.0"
+info:
+  description: |
+    API Documentation.
+    For most of the API call, token is required. Token can be generated using /users/auth call
+    You can use the token `token` to test the authorization filters
+  version: "0.0.1"
+  title: API
+  termsOfService: http://API.com/terms/
+  contact:
+    name: dev@liftoffllc.com
+basePath: /api
+schemes:
+  - http
+paths:
+  /users/auth:
+    post:
+      tags:
+        - users
+      summary: Generates token for further API interaction
+      description: ""
+      operationId: loginUser
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          description: |
+            Authenticate user with local strategy username password
+
+                {
+                  "authType": "local",
+                  "email": "user@domain.com",
+                  "password" : "USERS PASSWORD"
+                }
+
+            To authenticate Facebook user
+            
+                {
+                  "authType": "facebook",
+                  "access_token": "XZXXXXXXXXXXXXXX"
+                }
+            
+          required: true
+          schema:
+            $ref: "#/definitions/AuthUser"
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: string
+        "400":
+          description: Invalid username/password supplied
+  /users:
+    post:
+      tags:
+        - users
+      summary: Creates a new user
+      description: ""
+      operationId: createUser
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: successful operation
+  /users/detail:
+    get:
+      tags:
+        - users
+      summary: Fetches user detail
+      description: ""
+      operationId: getUser
+      produces:
+        - application/json
+        - application/xml
+      responses:
+        default:
+          description: successful operation
+    put:
+      tags:
+        - users
+      summary: Updates logged in user detail
+      description: "Deduces from token the user id to update"
+      operationId: updateUser
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: successful operation
+  /users/forgotPassword:
+    post:
+      tags:
+        - users
+      summary: Reset Password
+      description: ""
+      operationId: forgotPassword
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: "#/definitions/Email"
+      responses:
+        "404":
+          description: Could not perform action
+        default:
+          description: successful operation
+  /users/updatePassword:
+    post:
+      tags:
+        - users
+      summary: Generates New Password
+      description: ""
+      operationId: updatePassword
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: "#/definitions/PasswordReset"
+      responses:
+        "404":
+          description: Could not perform action
+        default:
+          description: successful operation
+  /users/logout:
+    get:
+      tags:
+        - users
+      summary: Logs out current logged in user session
+      description: ""
+      operationId: logoutUser
+      produces:
+        - application/json
+        - application/xml
+      responses:
+        default:
+          description: successful operation
+  /posts:
+    get:
+      tags:
+        - posts
+      summary: List of posts
+      description: ""
+      operationId: getPosts
+      produces:
+        - application/json
+        - application/xml
+      responses:
+        default:
+          description: successful operation
+    post:
+      tags:
+        - posts
+      summary: Creates a new post
+      description: ""
+      operationId: createPost
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: "#/definitions/Post"
+      responses:
+        default:
+          description: successful operation
+  /posts/{id}:
+    get:
+      tags:
+        - posts
+      summary: Post Detail
+      description: ""
+      operationId: getPosts
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: path
+          name: id
+          description: ID of post that needs to be fetched
+          required: true
+          type: integer
+          format: string
+      responses:
+        default:
+          description: successful operation
+  /posts/{id}/comments:
+    post:
+      tags:
+        - posts
+      summary: Add comment to post
+      description: ""
+      operationId: addPostComment
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - in: path
+          name: id
+          description: ID of post that needs to be fetched
+          required: true
+          type: integer
+          format: string
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: "#/definitions/Comment"
+      responses:
+        default:
+          description: successful operation
+definitions:
+  AuthUser:
+    properties:
+      authType:
+        type: string
+        enum: ['local', 'facebook']
+      email:
+        type: string
+      password:
+        type: string
+      access_token:
+        type: string
+  User:
+    properties:
+      network:
+        type: string
+        enum: ['local', 'facebook']
+      displayName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      bio:
+        type: string
+  Post:
+    properties:
+      caption:
+        type: string
+      mediaUrl:
+        type: string
+      parentId:
+        type: string
+  Comment:
+    properties:
+      text:
+        type: string
+  Email:
+    properties:
+      email:
+        type: string
+  PasswordReset:
+    properties:
+      email:
+        type: string
+      oldPassword:
+        type: string
+      password:
+        type: string
+
